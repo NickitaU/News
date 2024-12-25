@@ -1,0 +1,72 @@
+1.Создаем 2 пользователей
+from news.models import User
+u1 = User.objects.create_user('Maxim')
+u2 = User.objects.create_user('Ivan')
+u3 = User.objects.create_user('Petr')
+u4 = User.objects.create_user('Lew')
+(Я создал 4 при проверке при проверке.)
+
+2.Создать два объекта модели Author, связанные с пользователями.
+from news.models import Author
+a1=Author.objects.create(user = u1)
+a2=Author.objects.create(user = u2)
+
+3.Добавить 4 категории в модель Category.
+from news.models import Category
+Category.objects.create(name_category = 'Политика')
+Category.objects.create(name_category = 'Религия')
+Category.objects.create(name_category = 'Спорт')
+Category.objects.create(name_category = 'Криминал')
+
+4.Добавить 2 статьи и 1 новость.
+p1 = Post.objects.create(author=a1,positions="PA",title="Статья1 про спорт", text="Текст первой статьи про Спорт")
+P2 = Post.objects.create(author=a2,positions="PA",title="Статья2 про политику", text="Текст второй статьи про политику")
+P3 = Post.objects.create(author=a2,positions="PN",title="Криминальная новость про политику", text="Текст новости про покушение в политике")
+
+5.Присвоить им категории.
+Post.objects.get(id=1).post_category.add(Category.objects.get(id=3))
+Post.objects.get(id=2).post_category.add(Category.objects.get(id=1))
+Post.objects.get(id=3).post_category.add(Category.objects.get(id=4))
+
+6.Создать как минимум 4 комментария к разным объектам модели Post
+from news.models import*
+c1=Comment.objects.create(post=p1,user=u3,text="Ничего себе")
+c2=Comment.objects.create(post=p1,user=u1,text="Вот так бывает")
+c3=Comment.objects.create(post=p2,user=u2,text="Удивительно")
+c4=Comment.objects.create(post=p3,user=u2,text="Ужас")
+c5=Comment.objects.create(post=p3,user=u2,text="Удивительно")
+
+7.Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+Post.objects.get(id=1).like()
+Comment.objects.get(id=2).dislike()
+Post.objects.get(id=3).like()
+
+8.Обновить рейтинги пользователей.
+a1.update_rating() 
+a1.rating
+a2.update_rating() 
+a2.rating
+
+9.Вывести username и рейтинг лучшего пользователя.
+r = Author.objects.order_by('-rating')
+>>> for i in r:
+...     i.rating
+...     i.user.username
+
+10.Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
+p = Post.objects.order_by('-rating')
+for i in p[:1]:      
+...      i.some_datetime
+...      i.author.user  
+...      i.rating        
+...      i.title
+...      i.preview()
+
+
+11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+
+Post.objects.all().order_by('-rating')[0].comment_set.values(
+'some_datetime', 
+'user', 
+'rating', 'text'
+)
