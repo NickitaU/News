@@ -19,9 +19,9 @@ Category.objects.create(name = 'Спорт')
 Category.objects.create(name = 'Криминал')
 
 4.Добавить 2 статьи и 1 новость.
-p1 = Post.objects.create(author=a1,positions="PA",title="Статья1 про спорт", text="Текст первой статьи про Спорт")
-P2 = Post.objects.create(author=a2,positions="PA",title="Статья2 про политику", text="Текст второй статьи про политику")
-P3 = Post.objects.create(author=a2,positions="PN",title="Криминальная новость про политику", text="Текст новости про покушение в политике")
+p1 = Post.objects.create(author=a1,positions="PA",name="Статья1 про спорт", text="Текст первой статьи про Спорт")
+P2 = Post.objects.create(author=a2,positions="PA",name="Статья2 про политику", text="Текст второй статьи про политику")
+P3 = Post.objects.create(author=a2,positions="PN",name="Криминальная новость про политику", text="Текст новости про покушение в политике")
 
 5.Присвоить им категории.
 Post.objects.get(id=1).post_category.add(Category.objects.get(id=3))
